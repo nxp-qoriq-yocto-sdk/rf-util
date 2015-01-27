@@ -1,15 +1,20 @@
-CC = /opt/fsl-networking/QorIQ-SDK-V1.6/sysroots/x86_64-fslsdk-linux/usr/bin/powerpc-fsl-linux-gnuspe/powerpc-fsl-linux-gnuspe-gcc
-AR = /opt/fsl-networking/QorIQ-SDK-V1.6/sysroots/x86_64-fslsdk-linux/usr/bin/powerpc-fsl-linux-gnuspe/powerpc-fsl-linux-gnuspe-ar
+CC=$(CROSS_COMPILE)gcc
+AR=$(CROSS_COMPILE)ar
 
+currentdir = $(realpath .)
 
-INSTALL_DIR ?= ${PWD}/bin
-LIB_DIR ?= ${PWD}/bin
-INTERFACE_DIR := ${PWD}/interface
-INTERFACE_DIR := ${PWD}/interface
+INSTALL_DIR ?= $(currentdir)/bin
+LIB_DIR ?= $(currentdir)/bin
+INTERFACE_DIR := $(currentdir)/interface
+#INSTALL_DIR ?= ${PWD}/bin
+#LIB_DIR ?= ${PWD}/bin
+#INTERFACE_DIR := ${PWD}/interface
 CONFIG_DIR ?=
 INCLUDES += -I${INTERFACE_DIR}/
-INCLUDES += -I${PWD}/rflib/
-INCLUDES += -I${PWD}/rftool/
+#INCLUDES += -I${PWD}/rflib/
+#INCLUDES += -I${PWD}/rftool/
+INCLUDES += -I $(currentdir)/rflib
+INCLUDES += -I $(currentdir)/rftool
 #CFLAGS += -DDEBUG
 CFLAGS += -Wall
 
