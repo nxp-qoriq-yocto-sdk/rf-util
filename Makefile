@@ -16,6 +16,10 @@ clean: $(CLEANDIRS)
 $(CLEANDIRS):
 	$(MAKE) -C $(@:clean-%=%) clean
 
+
+install: ${DIRS}
+	$(foreach b, $(DIRS), ${MAKE} -C ${b}  install;)
+
 .PHONY: subdirs $(DIRS)
 .PHONY: subdirs $(BUILDDIRS)
 .PHONY: subdirs $(CLEANDIRS)

@@ -12,12 +12,12 @@ INCLUDES += -I${KERNEL_DIR}/drivers/misc/
 SRCS := $(wildcard *.c)
 OBJS := $(patsubst %.c, %.o, ${SRCS})
 
-all: rflib
+all: librflib
 
-rflib: prep ${OBJS}
-	mkdir -p ${LIB_DIR};
-	${AR} cr rflib.a ${OBJS}
-	cp rflib.a ${LIB_DIR}/
+librflib: prep ${OBJS}
+	mkdir -p ${INSTALL_DIR}/usr/${LIB_DIR};
+	${AR} cr librflib.a ${OBJS}
+	cp librflib.a ${INSTALL_DIR}/usr/${LIB_DIR}/
 
 %.o: %.c
 	${CC} ${CFLAGS} ${INCLUDES}  $< -o $@
@@ -29,10 +29,11 @@ prep:
 	fi
 
 clean:
-	rm -rf *.o rflib.a
+	rm -rf *.o librflib.a
 
 install:
-	cp rflib.a ${LIB_DIR}/
+	mkdir -p ${INSTALL_DIR}/usr/${LIB_DIR};
+	cp librflib.a ${INSTALL_DIR}/usr/${LIB_DIR}/
 
 
 

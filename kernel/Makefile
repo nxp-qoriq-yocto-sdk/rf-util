@@ -1,4 +1,7 @@
 KDIR ?=
+currentdir = $(realpath .)
+
+INSTALL_DIR ?= $(currentdir)/bin
 
 obj-m := fsl_tti.o
 
@@ -9,3 +12,7 @@ all:
 
 clean:
 	rm *.o *.ko  *.order *.symvers *.mod.c
+
+install:
+	mkdir -p ${INSTALL_DIR}/usr/driver/rf-util;
+	cp *.ko ${INSTALL_DIR}/usr/driver/rf-util/

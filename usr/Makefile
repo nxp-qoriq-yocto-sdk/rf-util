@@ -3,8 +3,9 @@ AR=$(CROSS_COMPILE)ar
 
 currentdir = $(realpath .)
 
-INSTALL_DIR ?= $(currentdir)/bin
-LIB_DIR ?= $(currentdir)/bin
+INSTALL_DIR ?= $(currentdir)/
+LIB_DIR ?= lib
+BIN_DIR ?= bin
 INTERFACE_DIR := $(currentdir)/interface
 #INSTALL_DIR ?= ${PWD}/bin
 #LIB_DIR ?= ${PWD}/bin
@@ -18,7 +19,7 @@ INCLUDES += -I $(currentdir)/rftool
 #CFLAGS += -DDEBUG
 CFLAGS += -Wall
 
-export CC  INSTALL_DIR LIB_DIR CONFIG_DIR
+export CC  INSTALL_DIR LIB_DIR CONFIG_DIR BIN_DIR
 export INTERFACE_DIR
 export INCLUDES CFLAGS
 export IPC_DIR
