@@ -251,8 +251,13 @@ static ssize_t dlt_read(struct file *filep, char __user *buf,
 
 	struct tti_timer *timer = filep->private_data;
 
-	if (nbytes != sizeof(struct dlt_read_t))
-		return -EINVAL;
+	if (filep->f_flags & O_NONBLOCK) {
+		if (nbytes != sizeof(struct dlt_read_t))
+			return -EINVAL;
+	} else {
+		if (nbytes != sizeof(unsigned int))
+			return -EINVAL;
+	}
 
 	add_wait_queue(&timer->wait_q, &wait);
 

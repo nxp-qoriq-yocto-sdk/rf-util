@@ -12,6 +12,7 @@ all:
 
 clean:
 	rm *.o *.ko  *.order *.symvers *.mod.c
+	rm -rf .fsl_* .tmp_*
 
 install:
 	mkdir -p ${INSTALL_DIR}/usr/driver/rf-util;

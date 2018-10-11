@@ -141,7 +141,11 @@ rf_handle_t rfdev_open(const char *if_name)
 	strncpy(rf_handle->name, if_name, DEV_NAME_SIZE);
 
 	priv->dlt_id = dlt_id;
+#ifndef NON_BLOCKING_MODE
 	priv->fd = open(dev_name, O_RDWR);
+#else
+	priv->fd = open(dev_name, O_RDWR | O_NONBLOCK);
+#endif
 	if (priv->fd < 0) {
 		DBG_ERR("Failed to open %s, err %d\n",
 			dev_name, errno);

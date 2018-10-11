@@ -28,6 +28,7 @@
 #include "log.h"
 #include "rftool.h"
 #include "utilities.h"
+#include "rflib.h"
 
 static int show_dev(struct rfdev *dev);
 void show_usage();
@@ -69,14 +70,23 @@ static int show_dev(struct rfdev *dev)
 
 int test_dl_tti(struct rfdev *dev)
 {
+	int fd, rc = 0;
+
+#ifndef NON_BLOCKING_MODE
 	struct timeval tv[TTI_LOG_COUNT];
 	unsigned int tti_count[TTI_LOG_COUNT], i = 0;
-	int fd, rc = 0;
+#else
+	fd_set f_descs;
+	struct timeval timeout = {0, 0};
+	dlt_read_t dlt_read = {0};
+#endif
 
 	fd = rfdev_get_fd(dev->if_handle);
 	
 	if (!fd)
 	   return -1;
+
+#ifndef NON_BLOCKING_MODE
 	memset(&tv[0], 0, sizeof(tv));
 	memset(&tti_count[0], 0, sizeof(tti_count));
 
@@ -96,6 +106,33 @@ int test_dl_tti(struct rfdev *dev)
 	}
 out:
 	return rc;
+#else
+	timeout.tv_sec = 5;	/* Add Value */
+	timeout.tv_usec = 0;
+
+	FD_ZERO(&f_descs);
+	FD_SET(fd, &f_descs);
+
+	rc = select(fd + 1, &f_descs, NULL, NULL, &timeout);
+	if (rc == -1)
+		perror("select()");
+	else if (rc) {
+		printf("Data is available now\n");
+		rc = read(fd, &dlt_read, sizeof(dlt_read_t));
+
+		if (rc < sizeof(dlt_read_t)) {
+			printf("Failed to read from RF file descriptor. return = %d.", rc);
+			exit(-1);
+		} else {
+			printf("Count = %d reg_cntr = %d\n",
+					dlt_read.count, dlt_read.reg_cntr);
+			return rc;
+		}
+	} else
+		printf("no data within 5 Seconds\n");
+#endif
+
+return -1;
 }
 
 enum rftool_cmd get_cmd(char *cmd_string)

@@ -1,6 +1,3 @@
-CC=$(CROSS_COMPILE)gcc
-AR=$(CROSS_COMPILE)ar
-
 currentdir = $(realpath .)
 
 INSTALL_DIR ?= $(currentdir)/
