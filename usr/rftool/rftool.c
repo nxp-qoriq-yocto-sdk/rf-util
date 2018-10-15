@@ -82,7 +82,7 @@ int test_dl_tti(struct rfdev *dev)
 #endif
 
 	fd = rfdev_get_fd(dev->if_handle);
-	
+
 	if (!fd)
 	   return -1;
 
@@ -153,7 +153,7 @@ void show_usage()
 
 	printf("commands:\n");
 	printf("	  : %s\n", CMD_DL_TTI_TEST);
-	
+
 }
 
 int main(int argc, char *argv[])
@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 	struct rf_dev_info dev_info;
 	enum rftool_cmd cmd = CMD_END;
 	int first_rf = -1, second_rf = -1;
-	
+
 	while ((opt = getopt(argc, argv, "i:c:f:s:")) != -1) {
 		switch (opt) {
 		case 'c':
@@ -187,8 +187,7 @@ int main(int argc, char *argv[])
 			rc = EINVAL;
 		}
 	}
-	if (!args)
-	{
+	if (!args) {
 		rc = show_all_devs();
 		return EINVAL;
 	}
@@ -202,7 +201,7 @@ int main(int argc, char *argv[])
 		show_usage();
 		goto out;
 	}
-	
+
 	rc = rflib_init_params(first_rf, second_rf);
 
 	if (rc)

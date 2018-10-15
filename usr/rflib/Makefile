@@ -29,7 +29,7 @@ prep:
 	fi
 
 clean:
-	rm -rf *.o librflib.a
+	rm -rf *.o librflib.a ${INSTALL_DIR}/usr
 
 install:
 	mkdir -p ${INSTALL_DIR}/usr/${LIB_DIR};

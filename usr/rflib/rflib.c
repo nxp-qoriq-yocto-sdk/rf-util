@@ -47,7 +47,7 @@ int rfdev_get_fd(rf_handle_t rf_handle)
 int rfdev_close(rf_handle_t rf_handle)
 {
 	int fd;
-	
+
 	fd = rfdev_get_fd(rf_handle);
 	close(fd);
 	free(rf_handle);
@@ -55,12 +55,13 @@ int rfdev_close(rf_handle_t rf_handle)
 	return 1;
 }
 
-static int get_dlt_module(int dlt_id) {
-
+static int get_dlt_module(int dlt_id)
+{
 	return dlt_id >> 2;
 }
-static int get_dlt_channel(int dlt_id) {
 
+static int get_dlt_channel(int dlt_id)
+{
 	return dlt_id & 0x3;
 }
 
@@ -68,9 +69,8 @@ static int get_dlt_channel(int dlt_id) {
 
 int rflib_init_params(int rf0_dlt, int rf1_dlt)
 {
-	int i,j;
-	if (rf0_dlt > 127 || rf1_dlt > 127)
-	{
+	int i, j;
+	if (rf0_dlt > 127 || rf1_dlt > 127) {
 		DBG_ERR("Failed to init, DLT index out of bound, err %d\n", errno);
 	}
 	if (rf0_dlt == -1)
@@ -78,7 +78,7 @@ int rflib_init_params(int rf0_dlt, int rf1_dlt)
 	if (rf1_dlt == -1)
 		rf1_dlt = DEV_DEFAULT_RF1_DLT;
 	for (i = 0; i < 2; i++) {
-		for ( j = 0; j < sizeof(DEV_DLT_NAME_PATTERN); j++) {
+		for (j = 0; j < sizeof(DEV_DLT_NAME_PATTERN); j++) {
 			DEV_DLT_NAME_RF[i][j] = DEV_DLT_NAME_PATTERN[j];
 		}
 
@@ -113,15 +113,15 @@ rf_handle_t rfdev_open(const char *if_name)
 		DBG_ERR("Failed to open, no name specified, err %d\n", errno);
 		goto out;
 	}
-	if (!strncasecmp(if_name, "rf0", DEV_NAME_SIZE)) 
+	if (!strncasecmp(if_name, "rf0", DEV_NAME_SIZE))
 		dev_idx = 0;
-	else if (!strncasecmp(if_name, "rf1", DEV_NAME_SIZE)) 
+	else if (!strncasecmp(if_name, "rf1", DEV_NAME_SIZE))
 		dev_idx = 1;
 	else {
 		DBG_ERR("Failed to open, %s is not a valid name, err %d\n", if_name, errno);
 		goto out;
 	}
-	
+
 	dev_name = DEV_DLT_NAME_RF[dev_idx];
 	dlt_id = DEV_DLT_ID_RF[dev_idx];
 
@@ -138,7 +138,7 @@ rf_handle_t rfdev_open(const char *if_name)
 
 	rf_handle->priv = ((char *) rf_handle) + sizeof(struct rf_handle);
 	priv = (struct rflib_rfdev_priv *) rf_handle->priv;
-	strncpy(rf_handle->name, if_name, DEV_NAME_SIZE);
+	strncpy(rf_handle->name, if_name, (DEV_NAME_SIZE - 1));
 
 	priv->dlt_id = dlt_id;
 #ifndef NON_BLOCKING_MODE
@@ -170,7 +170,7 @@ void rflib_exit(void)
 
 int rfdev_get_devinfo(rf_handle_t rf_handle,
 	struct rf_dev_info *dev_info)
-{	
+{
 	struct rflib_rfdev_priv *priv = rf_handle->priv;
 	dev_info->dlt_id = priv->dlt_id;
 

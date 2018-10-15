@@ -1,10 +1,9 @@
 #ifndef __RFLIB_H__
 #define __RFLIB_H__
 
-// #include "fsl_types.h"
-// #include "fsl_usmmgr.h"
-
-/*
+/* #include "fsl_types.h"
+ * #include "fsl_usmmgr.h"
+ *
  * rflib.h
  * Author: Eyal Wurmbrand <eyalwu@freescale.com>
  *
